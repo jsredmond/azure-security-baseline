@@ -4,25 +4,22 @@ resource "azurerm_resource_group" "rg_sentinel" {
 }
 
 resource "azurerm_log_analytics_workspace" "law_sentinel" {
-  name                = var.law_name
-  location            = azurerm_resource_group.rg_sentinel.location
-  resource_group_name = azurerm_resource_group.rg_sentinel.name
-  sku                 = "PerGB2018"
+  name                                    = var.law_name
+  location                                = azurerm_resource_group.rg_sentinel.location
+  resource_group_name                     = azurerm_resource_group.rg_sentinel.name
+  sku                                     = "PerGB2018"
+  retention_in_days                       = 30
+  daily_quota_gb                          = 1
+  internet_ingestion_enabled              = false
+  internet_query_enabled                  = false
+  immediate_data_purge_on_30_days_enabled = true
 }
 
 resource "azurerm_sentinel_log_analytics_workspace_onboarding" "sentinel" {
   workspace_id = azurerm_log_analytics_workspace.law_sentinel.id
 }
 
-# resource "azurerm_sentinel_alert_rule_scheduled" "example" {
-#   name                       = "example"
-#   log_analytics_workspace_id = azurerm_sentinel_log_analytics_workspace_onboarding.example.workspace_id
-#   display_name               = "example"
-#   severity                   = "High"
-#   query                      = <<QUERY
-# AzureActivity |
-#   where OperationName == "Create or Update Virtual Machine" or OperationName =="Create Deployment" |
-#   where ActivityStatus == "Succeeded" |
-#   make-series dcount(ResourceId) default=0 on EventSubmissionTimestamp in range(ago(7d), now(), 1d) by Caller
-# QUERY
-# }
+resource "azurerm_sentinel_data_connector_azure_active_directory" "sentinel_dc_aad" {
+  name                       = "dc-aad"
+  log_analytics_workspace_id = azurerm_sentinel_log_analytics_workspace_onboarding.sentinel.workspace_id
+}
