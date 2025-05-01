@@ -7,3 +7,8 @@ variable "location" {
   type    = string
   default = "East US"
 }
+
+variable "law_name" {
+  type    = string
+  default = "lab-sentinel"
+}
