@@ -23,3 +23,8 @@ resource "azurerm_sentinel_data_connector_azure_active_directory" "sentinel_dc_a
   name                       = "dc-aad"
   log_analytics_workspace_id = azurerm_sentinel_log_analytics_workspace_onboarding.sentinel.workspace_id
 }
+
+resource "azurerm_sentinel_data_connector_office_365" "sentinel_dc_365" {
+  name                       = "dc-365"
+  log_analytics_workspace_id = azurerm_sentinel_log_analytics_workspace_onboarding.sentinel.workspace_id
+}
