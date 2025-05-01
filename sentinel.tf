@@ -10,9 +10,9 @@ resource "azurerm_log_analytics_workspace" "law_sentinel" {
   sku                 = "PerGB2018"
 }
 
-# resource "azurerm_sentinel_log_analytics_workspace_onboarding" "example" {
-#   workspace_id = azurerm_log_analytics_workspace.example.id
-# }
+resource "azurerm_sentinel_log_analytics_workspace_onboarding" "sentinel" {
+  workspace_id = azurerm_log_analytics_workspace.law_sentinel.id
+}
 
 # resource "azurerm_sentinel_alert_rule_scheduled" "example" {
 #   name                       = "example"
