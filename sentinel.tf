@@ -3,6 +3,13 @@ resource "azurerm_resource_group" "rg_sentinel" {
   location = var.location
 }
 
+resource "azurerm_management_lock" "rg_lock_sentinel" {
+  name       = "resourge-group-sentinel-lock"
+  scope      = azurerm_resource_group.rg_sentinel.id
+  lock_level = "ReadOnly"
+  notes      = "This Resource Group is Read-Only"
+}
+
 resource "azurerm_log_analytics_workspace" "law_sentinel" {
   name                                    = var.law_name
   location                                = azurerm_resource_group.rg_sentinel.location
